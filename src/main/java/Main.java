@@ -1,30 +1,17 @@
 import com.google.gson.*;
-import com.google.gson.internal.GsonBuildConfig;
-
-import java.lang.reflect.Array;
-import java.util.Set;
 
 public class Main {
     public static void main(String[] args) throws Exception{
-        URLConnectionReader reader = new URLConnectionReader();
+        String title = "Apple";
 
-        JsonObject jsonObject = reader.getJSONfromURL("pear");
-        JsonObject query = jsonObject.getAsJsonObject("query");
-        JsonObject pages = query.getAsJsonObject("pages");
-        Set<String> keySet = pages.keySet();
-        String pageID = null;
-        for(String key:keySet) {
-            pageID = key;
-        }
+        WikiMediaReader reader = new WikiMediaReader();
+        JsonObject wikiPage = reader.getJSONfromURL(title);
+        RevisionListManager parser = new RevisionListManager(wikiPage);
 
-        JsonObject ID = pages.getAsJsonObject(pageID);
-        JsonArray revisions = ID.getAsJsonArray("revisions");
+        System.out.println(parser.getTimeSortedRevisionMap());  // This returns a linkedHashMap in the format <Date,User> in the order of newest to oldest
+        System.out.println("\n");
+        System.out.println(parser.getFrequencySortedRevisionMap()); // This returns a linkedHashMap in the format <User,Numberofedits> it is in the order of most edits to least
 
-
-        Gson gson = new Gson();
-        Revision rev = gson.fromJson(revisions.get(0),Revision.class);
-        System.out.println(rev.user);
-        System.out.println(rev.timestamp);
 
 
     }

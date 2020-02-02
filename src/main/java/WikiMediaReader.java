@@ -5,7 +5,7 @@ import java.net.*;
 import java.io.*;
 
 
-public class URLConnectionReader {
+public class WikiMediaReader {
 
     public JsonObject getJSONfromURL(String title) throws Exception {
         URL wiki = new URL("https://en.wikipedia.org/w/api.php?action=query&format=json&prop=revisions&titles=" + title + "&rvprop=timestamp|user&rvlimit=30&redirects");

@@ -1,4 +1,26 @@
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.SimpleTimeZone;
+import java.util.TimeZone;
+
 public class Revision {
-    String user;
-    String timestamp;
+    private String user;
+    private String timestamp;
+
+    public Revision(String user, String timestamp) {
+        this.user = user;
+        this.timestamp = timestamp;
+    }
+
+    public String getUser() {
+        return this.user;
+    }
+
+
+    public Date getParsedDate() throws Exception {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        format.getCalendar().setTimeZone(TimeZone.getTimeZone("GMT"));
+        Date date = format.parse(this.timestamp);
+        return date;
+    }
 }
