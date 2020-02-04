@@ -1,6 +1,5 @@
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
 public class Revision {
@@ -17,10 +16,10 @@ public class Revision {
     }
 
 
-    public Date getParsedDate() throws Exception {
+    public String getParsedDate() throws Exception {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         format.getCalendar().setTimeZone(TimeZone.getTimeZone("GMT"));
         Date date = format.parse(this.timestamp);
-        return date;
+        return date.toString();
     }
 }

@@ -29,8 +29,8 @@ public class RevisionListManager {
         return revisions;
     }
 
-    public LinkedHashMap<Date,String> getTimeSortedRevisionMap() {
-        LinkedHashMap<Date,String> revisionMap = new LinkedHashMap<>();
+    public LinkedHashMap<String,String> getTimeSortedRevisionMap() {
+        LinkedHashMap<String,String> revisionMap = new LinkedHashMap<>();
         Gson gson = new Gson();
 
         JsonArray revisions = getRevisions();
@@ -42,13 +42,13 @@ public class RevisionListManager {
                 e.printStackTrace();
             }
         }
-        return revisionMap;
+       return revisionMap;
     }
 
 
 
-    public LinkedHashMap<String,Integer> getFrequencySortedRevisionMap() {
-        LinkedHashMap<Date,String> UnsortedRevisionMap = getTimeSortedRevisionMap();
+    public LinkedHashMap<String, String> getFrequencySortedRevisionMap() {
+        LinkedHashMap<String, String> UnsortedRevisionMap = getTimeSortedRevisionMap();
         LinkedHashMap<String,Integer> count = new LinkedHashMap<>();
 
         for(String user : UnsortedRevisionMap.values()) {
@@ -56,7 +56,7 @@ public class RevisionListManager {
                 count.put(user,count.get(user) + 1);
             }
             else {
-                count.put(user,1);
+                count.put(user, (1));
             }
         }
 
@@ -68,14 +68,14 @@ public class RevisionListManager {
                         Map.Entry::getValue,
                         (oldValue,newValue) -> oldValue, LinkedHashMap::new));
 
-        LinkedHashMap<String,Integer> FrequencySortedRevisionMap = new LinkedHashMap<>();
+        LinkedHashMap<String,String> FrequencySortedRevisionMap = new LinkedHashMap<>();
         LinkedList<String> entryList = new LinkedList<>();
 
-        for(Map.Entry<String,Integer> entry : result.entrySet()) {
+        for(Map.Entry<String, Integer> entry : result.entrySet()) {
             entryList.add(entry.getKey());
         }
         for(int i = entryList.size()-1; i >= 0; i--) {
-            FrequencySortedRevisionMap.put(entryList.get(i),result.get(entryList.get(i)));
+            FrequencySortedRevisionMap.put(entryList.get(i), (result.get(entryList.get(i)).toString()));
         }
 
         return FrequencySortedRevisionMap;

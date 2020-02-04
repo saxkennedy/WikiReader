@@ -2,7 +2,7 @@ import com.google.gson.*;
 
 public class Main {
     public static void main(String[] args) throws Exception{
-        String title = "Apple";
+        /*String title = "Apple";
 
         WikiMediaReader reader = new WikiMediaReader();
         JsonObject wikiPage = reader.getJSONfromURL(title);
@@ -13,6 +13,6 @@ public class Main {
         System.out.println(parser.getFrequencySortedRevisionMap()); // This returns a linkedHashMap in the format <User,Numberofedits> it is in the order of most edits to least
 
 
-
+*/
     }
 }
