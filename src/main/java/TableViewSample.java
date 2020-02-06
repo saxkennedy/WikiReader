@@ -40,6 +40,7 @@ public class TableViewSample extends Application {
 
         Button search = new Button("Search!");
         search.setOnAction(actionEvent -> {
+            notFound.setText("");
             if (timeSort.isSelected()) {
                 headerA = ("Date/Time");
                 headerB = "User";
@@ -87,7 +88,7 @@ public class TableViewSample extends Application {
             TableView<Map.Entry<String, String>> table = new TableView<>(revisedMapItems);
             table.getColumns().setAll(column1, column2);
             table.setMinSize(400, 800);
-            vBox.getChildren().addAll(searchTerm, searchLabel, search, timeSort, frequencySort, redirectNotify, table);
+            vBox.getChildren().addAll(searchTerm, searchLabel, search, timeSort, frequencySort, notFound,redirectNotify, table);
             Scene scene2 = new Scene(vBox, 400, 900);
             stage.setScene(scene2);
         });
