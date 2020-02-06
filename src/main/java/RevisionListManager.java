@@ -2,6 +2,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import sun.awt.image.ImageWatched;
 
 
 import java.util.*;
@@ -54,8 +55,15 @@ public class RevisionListManager {
     public LinkedHashMap<String, String> getFrequencySortedRevisionMap() {
         LinkedHashMap<String, String> UnsortedRevisionMap = getTimeSortedRevisionMap();
         LinkedHashMap<String,Integer> count = new LinkedHashMap<>();
+        LinkedHashMap<String, String> ReverseRevisionMap = new LinkedHashMap<>();
+        LinkedList<String> reverseList = new LinkedList<>(UnsortedRevisionMap.keySet());
 
-        for(String user : UnsortedRevisionMap.values()) {
+        Collections.reverse(reverseList);
+        for(String key:reverseList) {
+            ReverseRevisionMap.put(key,UnsortedRevisionMap.get(key));
+        }
+
+        for(String user : ReverseRevisionMap.values()) {
             if(count.containsKey(user)) {
                 count.put(user,count.get(user) + 1);
             }
@@ -84,4 +92,6 @@ public class RevisionListManager {
 
         return FrequencySortedRevisionMap;
     }
+
+
 }
