@@ -18,22 +18,6 @@ public class RevisionListManager {
         setID(jsonObject);
     }
 
-    public void setID(JsonObject jsonObject) {
-        query = jsonObject.getAsJsonObject("query");
-        IDLocation=query.getAsJsonObject("pages");
-        Set<String> keySet = IDLocation.keySet();
-        for(String key:keySet) {
-            pageID = key;
-        }
-    }
-
-
-    private JsonArray getRevisions() {
-        JsonObject IDField = IDLocation.getAsJsonObject(pageID);
-        JsonArray revisions = IDField.getAsJsonArray("revisions");
-        return revisions;
-    }
-
     public LinkedHashMap<String,String> getTimeSortedRevisionMap() {
         LinkedHashMap<String,String> revisionMap = new LinkedHashMap<>();
         Gson gson = new Gson();
@@ -54,25 +38,25 @@ public class RevisionListManager {
 
     public LinkedHashMap<String, String> getFrequencySortedRevisionMap() {
         LinkedHashMap<String, String> UnsortedRevisionMap = getTimeSortedRevisionMap();
-        LinkedHashMap<String,Integer> count = new LinkedHashMap<>();
+        LinkedHashMap<String, Integer> RevisionCounterMap = new LinkedHashMap<>();
+
         LinkedHashMap<String, String> ReverseRevisionMap = new LinkedHashMap<>();
         LinkedList<String> reverseList = new LinkedList<>(UnsortedRevisionMap.keySet());
-
         Collections.reverse(reverseList);
         for(String key:reverseList) {
             ReverseRevisionMap.put(key,UnsortedRevisionMap.get(key));
         }
 
         for(String user : ReverseRevisionMap.values()) {
-            if(count.containsKey(user)) {
-                count.put(user,count.get(user) + 1);
+            if(RevisionCounterMap.containsKey(user)) {
+                RevisionCounterMap.put(user,RevisionCounterMap.get(user) + 1);
             }
             else {
-                count.put(user, (1));
+                RevisionCounterMap.put(user, (1));
             }
         }
 
-        LinkedHashMap<String,Integer> result = count.entrySet()
+        LinkedHashMap<String,Integer> result = RevisionCounterMap.entrySet()
                 .stream()
                 .sorted(Map.Entry.comparingByValue())
                 .collect(Collectors.toMap(
@@ -91,6 +75,21 @@ public class RevisionListManager {
         }
 
         return FrequencySortedRevisionMap;
+    }
+
+    private JsonArray getRevisions() {
+        JsonObject IDField = IDLocation.getAsJsonObject(pageID);
+        JsonArray revisions = IDField.getAsJsonArray("revisions");
+        return revisions;
+    }
+
+    private void setID(JsonObject jsonObject) {
+        query = jsonObject.getAsJsonObject("query");
+        IDLocation=query.getAsJsonObject("pages");
+        Set<String> keySet = IDLocation.keySet();
+        for(String key:keySet) {
+            pageID = key;
+        }
     }
 
 
