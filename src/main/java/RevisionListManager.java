@@ -5,23 +5,27 @@ import com.google.gson.JsonObject;
 
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class RevisionListManager {
     private String pageID = null;
     private JsonObject IDLocation;
-
+    private JsonObject query;
     public RevisionListManager(JsonObject jsonObject) {
         setID(jsonObject);
     }
 
     public void setID(JsonObject jsonObject) {
-        IDLocation = jsonObject.getAsJsonObject("query").getAsJsonObject("pages");
+        query = jsonObject.getAsJsonObject("query");
+        IDLocation=query.getAsJsonObject("pages");
         Set<String> keySet = IDLocation.keySet();
         for(String key:keySet) {
             pageID = key;
         }
     }
+
 
     private JsonArray getRevisions() {
         JsonObject IDField = IDLocation.getAsJsonObject(pageID);

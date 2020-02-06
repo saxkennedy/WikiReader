@@ -16,6 +16,7 @@ public class TableViewSample extends Application {
     private String type;
     private String headerA;
     private String headerB;
+    private Label notFound = new Label();
 
     public static void main(String[] args) {
         launch(args);
@@ -25,6 +26,7 @@ public class TableViewSample extends Application {
     public void start(Stage stage) {
         TextField searchTerm = new TextField();
         Label searchLabel = new Label("Please enter your search term.");
+        Label Notify = new Label();
 
         final ToggleGroup sortGroup = new ToggleGroup();
 
@@ -52,8 +54,9 @@ public class TableViewSample extends Application {
             try {
                 map = rev.revisionMapGenerator(searchTerm.getText(), type);
             } catch (Exception e) {
-                e.printStackTrace();
+                notFound.setText("Page not found!  TRY AGAIN!");
             }
+
             ObservableList<Map.Entry<String, String>> revisedMapItems = FXCollections.observableArrayList(map.entrySet());
             TableColumn<Map.Entry<String, String>, String> column1 = new TableColumn<>(headerA);
             column1.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<String, String>, String>, ObservableValue<String>>() {
@@ -71,17 +74,26 @@ public class TableViewSample extends Application {
                 }
 
             });
+
+            String redirect = rev.getRedirect();
+            System.out.println(redirect);
+            if (redirect != null) {
+                redirect = ("Redirected to page: " + redirect);
+            } else {
+                redirect = "Page Found!";
+            }
+            Label redirectNotify = new Label(redirect);
             VBox vBox = new VBox();
             TableView<Map.Entry<String, String>> table = new TableView<>(revisedMapItems);
             table.getColumns().setAll(column1, column2);
             table.setMinSize(400, 800);
-            vBox.getChildren().addAll(searchTerm, searchLabel, search, timeSort, frequencySort, table);
+            vBox.getChildren().addAll(searchTerm, searchLabel, search, timeSort, frequencySort, redirectNotify, table);
             Scene scene2 = new Scene(vBox, 400, 900);
             stage.setScene(scene2);
         });
 
         VBox vBox = new VBox();
-        vBox.getChildren().addAll(searchTerm, searchLabel, search, timeSort, frequencySort);
+        vBox.getChildren().addAll(searchTerm, searchLabel, search, timeSort, frequencySort, notFound);
         stage.setTitle("Wikipedia Editor Information");
         Scene scene1 = new Scene(vBox, 400, 900);
         stage.setScene(scene1);
