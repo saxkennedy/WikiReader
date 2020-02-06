@@ -55,7 +55,7 @@ public class TableViewSample extends Application {
             try {
                 map = rev.revisionMapGenerator(searchTerm.getText(), type);
             } catch (Exception e) {
-                notFound.setText("Page not found!  TRY AGAIN!");
+                notFound.setText("Page Not Found! Try Again.");
             }
 
             ObservableList<Map.Entry<String, String>> revisedMapItems = FXCollections.observableArrayList(map.entrySet());
