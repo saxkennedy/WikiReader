@@ -1,4 +1,3 @@
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.util.LinkedHashMap;
@@ -9,7 +8,7 @@ public class RevisionMapGenerator {
     public LinkedHashMap<String, String> revisionMapGenerator(String term, String type) {
 
         wikiPage = getWikiPage(term);
-        RevisionListManager parser = new RevisionListManager(wikiPage);
+        RevisionMapFactory parser = new RevisionMapFactory(wikiPage);
         LinkedHashMap<String, String> revisionMap;
         if (type == "frequency") {
             revisionMap = parser.getFrequencySortedRevisionMap();
