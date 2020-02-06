@@ -6,14 +6,15 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class NetworkStatusWindow {
-    private String title = "Network Connection";
-    private String getNetworkMessage = "Connecting to Wikipedia";
-    private String getNetworkFailMessage = "Cannot connect to Wikipedia";
+    private final String title = "Network Connection";
+    private final String getNetworkMessage = "Connecting to Wikipedia";
+    private final String getNetworkFailMessage = "Cannot connect to Wikipedia";
     private Stage window = new Stage();
     private Label label = new Label();
 
     public void open() {
-
+        String title = "Network Connection";
+        String getNetworkMessage = "Connecting to Wikipedia";
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle(title);
         window.setMinWidth(250);
