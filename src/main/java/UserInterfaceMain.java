@@ -42,12 +42,13 @@ public class UserInterfaceMain extends Application {
                 type = "frequency";
             }
             RevisionMapGenerator initialTermMap = new RevisionMapGenerator();
-            Map<String, String> sortedTermMap = null;
+            Map<String, String> sortedTermMap = new LinkedHashMap<>();
             try {
                 sortedTermMap = initialTermMap.revisionMapGenerator(searchTerm.getText(), type);
             } catch (Exception e) {
                 notFound.setText("Page Not Found! Try Again.");
             }
+
             ObservableList<Map.Entry<String, String>> revisedMapItems = FXCollections.observableArrayList(sortedTermMap.entrySet());
             TableColumn<Map.Entry<String, String>, String> column1 = new TableColumn<>(headerA);
             column1.setCellValueFactory(p -> new SimpleStringProperty(p.getValue().getKey()));

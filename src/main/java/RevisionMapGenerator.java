@@ -45,5 +45,4 @@ public class RevisionMapGenerator {
         }
         return wikiPage;
     }
-
 }
