@@ -1,86 +1,64 @@
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
-
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
-public class TableViewSample extends Application {
+public class UserInterfaceMain extends Application {
     private String type;
     private String headerA;
     private String headerB;
     private Label notFound = new Label();
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
+    public static void main(String[] args) {launch(args);}
     @Override
     public void start(Stage stage) {
         TextField searchTerm = new TextField();
         Label searchLabel = new Label("Please enter your search term.");
-        Label Notify = new Label();
+        RadioButton timeSort = new RadioButton();
+        RadioButton frequencySort = new RadioButton();
+        Button search = new Button("Search!");
 
         final ToggleGroup sortGroup = new ToggleGroup();
-
-        RadioButton timeSort = new RadioButton();
         timeSort.setToggleGroup(sortGroup);
         timeSort.setText("Sort by date.");
-
-        RadioButton frequencySort = new RadioButton();
         frequencySort.setToggleGroup(sortGroup);
         frequencySort.setText("Sort by Frequency.");
 
-        Button search = new Button("Search!");
         search.setOnAction(actionEvent -> {
             notFound.setText("");
             if (timeSort.isSelected()) {
                 headerA = ("Date/Time");
                 headerB = "User";
                 type = "time";
-            } else if (frequencySort.isSelected()) {
+            }
+            else if (frequencySort.isSelected()) {
                 headerA = "User";
                 headerB = "Number of Edits";
                 type = "frequency";
             }
-            RevisionMapGenerator rev = new RevisionMapGenerator();
-            Map<String, String> map = null;
+            RevisionMapGenerator initialTermMap = new RevisionMapGenerator();
+            Map<String, String> sortedTermMap = null;
             try {
-                map = rev.revisionMapGenerator(searchTerm.getText(), type);
+                sortedTermMap = initialTermMap.revisionMapGenerator(searchTerm.getText(), type);
             } catch (Exception e) {
                 notFound.setText("Page Not Found! Try Again.");
             }
-
-            ObservableList<Map.Entry<String, String>> revisedMapItems = FXCollections.observableArrayList(map.entrySet());
+            ObservableList<Map.Entry<String, String>> revisedMapItems = FXCollections.observableArrayList(sortedTermMap.entrySet());
             TableColumn<Map.Entry<String, String>, String> column1 = new TableColumn<>(headerA);
-            column1.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<String, String>, String>, ObservableValue<String>>() {
-                @Override
-                public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<String, String>, String> p) {
-                    return new SimpleStringProperty(p.getValue().getKey());
-                }
-            });
-
+            column1.setCellValueFactory(p -> new SimpleStringProperty(p.getValue().getKey()));
             TableColumn<Map.Entry<String, String>, String> column2 = new TableColumn<>(headerB);
-            column2.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<String, String>, String>, ObservableValue<String>>() {
-                @Override
-                public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<String, String>, String> e) {
-                    return new SimpleStringProperty(e.getValue().getValue());
-                }
+            column2.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getValue()));
 
-            });
-
-            String redirect = rev.getRedirect();
-            System.out.println(redirect);
+            String redirect = initialTermMap.getRedirect();
             if (redirect != null) {
                 redirect = ("Redirected to page: " + redirect);
-            } else {
+            }
+            else {
                 redirect = "Page Found!";
             }
             Label redirectNotify = new Label(redirect);
@@ -92,7 +70,6 @@ public class TableViewSample extends Application {
             Scene scene2 = new Scene(vBox, 400, 900);
             stage.setScene(scene2);
         });
-
         VBox vBox = new VBox();
         vBox.getChildren().addAll(searchTerm, searchLabel, search, timeSort, frequencySort, notFound);
         stage.setTitle("Wikipedia Editor Information");
@@ -100,6 +77,4 @@ public class TableViewSample extends Application {
         stage.setScene(scene1);
         stage.show();
     }
-
-
 }
