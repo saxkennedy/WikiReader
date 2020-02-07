@@ -1,3 +1,5 @@
+package edu.bsu.cs222;
+
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -6,9 +8,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class NetworkStatusWindow {
-    private final String title = "Network Connection";
-    private final String getNetworkMessage = "Connecting to Wikipedia";
-    private final String getNetworkFailMessage = "Cannot connect to Wikipedia";
+    private String title = "Network Connection";
+    private String getNetworkMessage = "Connecting to Wikipedia";
+    private String getNetworkFailMessage = "Cannot connect to Wikipedia";
     private Stage window = new Stage();
     private Label label = new Label();
 
@@ -33,9 +35,11 @@ public class NetworkStatusWindow {
 
     public void displayConnectionError() {
         label.setText(getNetworkFailMessage);
+        window.showAndWait();
     }
 
     public void close() {
         window.close();
     }
+
 }

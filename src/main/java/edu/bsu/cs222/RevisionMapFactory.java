@@ -1,3 +1,5 @@
+package edu.bsu.cs222;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -22,7 +24,7 @@ public class RevisionMapFactory {
         JsonArray revisions = getRevisions();
 
         for(JsonElement revision:revisions) {
-            Revision rev = gson.fromJson(revision,Revision.class);
+            Revision rev = gson.fromJson(revision, Revision.class);
             try {
                 revisionMap.put(rev.getParsedDate(),rev.getUser());
             } catch (Exception e) {
@@ -45,15 +47,12 @@ public class RevisionMapFactory {
                         Map.Entry::getValue,
                         (oldValue,newValue) -> oldValue, LinkedHashMap::new));
 
-        LinkedHashMap<String,String> FrequencySortedRevisionMap = reverseSortedRevisionMap(result);
-
-        return FrequencySortedRevisionMap;
+        return reverseSortedRevisionMap(result);
     }
 
     private JsonArray getRevisions() {
         JsonObject IDField = IDLocation.getAsJsonObject(pageID);
-        JsonArray revisions = IDField.getAsJsonArray("revisions");
-        return revisions;
+        return IDField.getAsJsonArray("revisions");
     }
 
     private void setID(JsonObject jsonObject) {

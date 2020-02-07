@@ -1,4 +1,7 @@
+package edu.bsu.cs222;
+
 import java.util.*;
+
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -13,6 +16,7 @@ public class UserInterfaceMain extends Application {
     private String headerA;
     private String headerB;
     private Label notFound = new Label();
+
 
     public static void main(String[] args) {launch(args);}
     @Override
@@ -42,13 +46,21 @@ public class UserInterfaceMain extends Application {
                 type = "frequency";
             }
             RevisionMapGenerator initialTermMap = new RevisionMapGenerator();
-            Map<String, String> sortedTermMap = new LinkedHashMap<>();
+            Map<String, String> sortedTermMap = null;
+            NetworkStatusWindow netWin = new NetworkStatusWindow();
+            WikiMediaReader connect = new WikiMediaReader();
             try {
+                netWin.open();
                 sortedTermMap = initialTermMap.revisionMapGenerator(searchTerm.getText(), type);
+
+
             } catch (Exception e) {
                 notFound.setText("Page Not Found! Try Again.");
+                try{connect.getJSONfromURL("Soup");}
+                catch(Exception f){netWin.displayConnectionError();}
             }
-
+            netWin.close();
+            assert sortedTermMap != null;
             ObservableList<Map.Entry<String, String>> revisedMapItems = FXCollections.observableArrayList(sortedTermMap.entrySet());
             TableColumn<Map.Entry<String, String>, String> column1 = new TableColumn<>(headerA);
             column1.setCellValueFactory(p -> new SimpleStringProperty(p.getValue().getKey()));
@@ -58,6 +70,7 @@ public class UserInterfaceMain extends Application {
             String redirect = initialTermMap.getRedirect();
             if (redirect != null) {
                 redirect = ("Redirected to page: " + redirect);
+
             }
             else {
                 redirect = "Page Found!";

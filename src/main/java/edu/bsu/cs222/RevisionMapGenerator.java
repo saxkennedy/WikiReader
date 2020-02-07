@@ -1,19 +1,21 @@
-import com.google.gson.JsonObject;
+package edu.bsu.cs222;
 
+import com.google.gson.JsonObject;
 import java.util.LinkedHashMap;
 
 public class RevisionMapGenerator {
     private JsonObject wikiPage;
+
 
     public LinkedHashMap<String, String> revisionMapGenerator(String term, String type) {
 
         wikiPage = getWikiPage(term);
         RevisionMapFactory parser = new RevisionMapFactory(wikiPage);
         LinkedHashMap<String, String> revisionMap;
-        if (type == "frequency") {
+        if (type.equals("frequency")) {
             revisionMap = parser.getFrequencySortedRevisionMap();
             return revisionMap;
-        } else if (type == "time") {
+        } else if (type.equals("time")) {
             revisionMap = parser.getTimeSortedRevisionMap();
             return revisionMap;
         } else {
@@ -32,16 +34,12 @@ public class RevisionMapGenerator {
             return null;
         }
     }
-
-    private JsonObject getWikiPage(String term) {
+    public JsonObject getWikiPage(String term) {
         WikiMediaReader reader = new WikiMediaReader();
-        NetworkStatusWindow netWin = new NetworkStatusWindow();
         try {
-            netWin.open();
             wikiPage = reader.getJSONfromURL(term);
-            netWin.close();
         } catch(Exception e) {
-            netWin.displayConnectionError();
+            return null;
         }
         return wikiPage;
     }

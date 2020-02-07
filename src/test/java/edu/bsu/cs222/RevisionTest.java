@@ -1,3 +1,6 @@
+package edu.bsu.cs222;
+
+import com.google.gson.JsonObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -13,5 +16,11 @@ public class RevisionTest {
         Revision rev = new Revision("Jeffrey","2020-02-06T08:25:43");
         String date = rev.getParsedDate();
         Assertions.assertEquals(date,"Thu Feb 06 03:25:43 EST 2020");
+    }
+
+    @Test
+    public void wikiTestTest() {
+        RevisionMapGenerator testGenerator = new RevisionMapGenerator();
+        JsonObject page = testGenerator.getWikiPage("Obama");
     }
 }
